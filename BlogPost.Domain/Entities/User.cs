@@ -1,7 +1,7 @@
 ﻿using BlogPost.Domain.Entities;
 using BlogPost.Domain.Enums;
 
-namespace Domain.Entities;
+namespace BlogPost.Domain.Entities;
 
 public class User : Base
 {
