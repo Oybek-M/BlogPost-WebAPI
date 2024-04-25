@@ -2,5 +2,5 @@
 
 public interface IHashTagRepository : IGenericRepository<HashTag>
 {
-    Task<HashTag> GetByNameAsync(long id);
+    Task<HashTag> GetByNameAsync(string name);
 }

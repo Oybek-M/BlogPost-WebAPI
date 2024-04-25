@@ -2,5 +2,5 @@
 
 public interface ICategoryRepository : IGenericRepository<Category>
 {
-    Task<Category> GetByNameAsync(int id);
+    Task<Category> GetByNameAsync(string name);
 }

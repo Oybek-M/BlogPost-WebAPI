@@ -1,6 +1,5 @@
 ﻿using BlogPost.Domain.Entities;
 using BlogPost.Domain.Enums;
-using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogPost.Data.DbContexts;
