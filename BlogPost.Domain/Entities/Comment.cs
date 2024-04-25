@@ -2,7 +2,8 @@
 
 public class Comment : Base
 {
-    public long PostId {  get; set; } // Post ID
-    public long UserId { get; set; } // Comment`s author
+    public int PostId {  get; set; } // Post ID
+    public int UserId { get; set; } // Comment`s author
     public string CommentText { get; set; } = string.Empty; // Comment`s body
+
 }
