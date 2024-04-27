@@ -11,7 +11,7 @@ namespace BlogPost.Application.Common.Validators
                 .NotEmpty()
                 .WithMessage("Comment bo'sh bo'lmasin")
                 .MinimumLength(1)
-                .WithMessage("Kamida 1ta belgi bo'lsin");
+                .WithMessage("Kamida 1 ta belgi bo'lsin");
         }
     }
 }

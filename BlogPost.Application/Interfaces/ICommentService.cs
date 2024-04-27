@@ -11,7 +11,7 @@ public interface ICommentService
 {
     Task CreateAsync(AddCommentDto dto);
     Task<List<CommentDto>> GetAllAsync();
-    Task GetByIdAsync(int id);
+    Task<CommentDto> GetByIdAsync(int id);
     Task UpdateAsync(CommentDto dto);
     Task DeleteAsync(int id);
 }

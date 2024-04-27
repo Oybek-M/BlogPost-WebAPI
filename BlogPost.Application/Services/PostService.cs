@@ -73,43 +73,33 @@ public class PostService(IUnitOfWork unitOfWork,
 
     public async Task<List<PostDto>> GetByTitleAsync(string title)
     {
-        /*
-        var posts = await _unitOfWork.Post.GetAllAsync();
-        posts = posts.Where(p => p.Title == title).ToList();
-
-        if (posts is null)
+        var posts = await _unitOfWork.Post.GetByTitleAsync(title);
+        if (!posts.Any())
         {
-            throw new StatusCodeException(HttpStatusCode.NotFound, "Post is not found");
+            throw new StatusCodeException(HttpStatusCode.NotFound, "Post(s) is not found");
+        }
+        
+        var postsModel = posts
+            .Select(item => (PostDto)item).ToList();
+        
+        return postsModel;
+    }
+
+    public async Task<List<PostDto>> GetByCategoryAsync(int id)
+    {
+        var posts = await _unitOfWork.Post.GetByCategoryAsync(id);
+        if (!posts.Any())
+        {
+            throw new StatusCodeException(HttpStatusCode.NotFound, "Post(s) is not found");
         }
 
-        return posts;
-        */
+        var posteModel = posts
+            .Select(item => (PostDto)item).ToList();
 
-        //throw new NotImplementedException();
-        throw new StatusCodeException(HttpStatusCode.OK, "Coming soon...");
-
-        /*
-        var category = await _unitOfWork.Category.GetByNameAsync(post.Title);
-        var models = (PostDto)post;
-
-
-        model.Category = new Category()
-        {
-            Id = category.Id,
-            Name = category.Name,
-            Description = category.Description
-        };
-
-        return model;
-        */
+        return posteModel;
     }
 
-    public Task<List<PostDto>> GetByCategoryAsync(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<PostDto> GetByTagAsync(string tagName)
+    public Task<List<PostDto>> GetByTagAsync(string tagName)
     {
         throw new NotImplementedException();
     }
@@ -136,7 +126,7 @@ public class PostService(IUnitOfWork unitOfWork,
         var post = await _unitOfWork.Post.GetByIdAsync(id);
         if (post is null)
         {
-            throw new StatusCodeException(HttpStatusCode.NotFound, "Post dosn not exist");
+            throw new StatusCodeException(HttpStatusCode.NotFound, "Post is not found");
         }
 
         await _unitOfWork.Post.DeleteAsync(post);

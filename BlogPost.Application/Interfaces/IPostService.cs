@@ -9,7 +9,7 @@ public interface IPostService
     Task<PostDto> GetByIdAsync(int id);
     Task<List<PostDto>> GetByTitleAsync(string title);
     Task<List<PostDto>> GetByCategoryAsync(int id); // Category ID
-    Task<PostDto> GetByTagAsync(string tagName);
+    Task<List<PostDto>> GetByTagAsync(string tagName);
     Task UpdateAsync(PostDto dto);
     Task DeleteAsync(int id);
 }
