@@ -1,10 +1,10 @@
-﻿using BlogPost.Domain.Entities;
+﻿using BlogPost.Application.DTOs.UserDtos;
+using BlogPost.Domain.Entities;
 
 namespace BlogPost.Application.Interfaces;
 
 public interface IAdminService
 {
-    Task ChangeUserRoleAsync(int id);
-    Task DeleteUserAsync(int id);
     Task<List<User>> GetAllAdminAsync();
+    Task ChangeUserRoleAsync(int id);
 }

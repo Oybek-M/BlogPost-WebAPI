@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace BlogPost.Data.Repositories;
 
@@ -13,16 +14,17 @@ public class PostRepository(AppDbContext dbContext)
                                  .Contains(title.ToLower()))
                                  .ToList();
 
+        posts.Clear();
         return filteredPosts;
     }
 
     public async Task<List<Post>> GetByCategoryAsync(int categoryId)
     {
         var posts = await _dbContext.Posts.ToListAsync();
+        var filteredPosts = posts
+            .Where(p => p.CategoryId == categoryId).ToList();
 
-        var filteredPosts = posts.
-            Where(p => p.CategoryId == categoryId).ToList();
-
+        posts.Clear();
         return filteredPosts;
     }
 
@@ -39,6 +41,7 @@ public class PostRepository(AppDbContext dbContext)
             }
         }
 
+        posts.Clear();
         return filteredPosts;
     }
 }

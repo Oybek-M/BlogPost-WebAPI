@@ -9,7 +9,9 @@ using System.Net;
 
 namespace BlogPost.Application.Services;
 
-public class CategoryService(IUnitOfWork unitOfWork, IValidator<Category> validator) : ICategoryService
+public class CategoryService(IUnitOfWork unitOfWork,
+                              IValidator<Category> validator)
+    : ICategoryService
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IValidator<Category> _validator = validator;

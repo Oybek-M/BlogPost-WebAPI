@@ -8,12 +8,14 @@ using System.Net;
 
 namespace BlogPost.Application.Services;
 
-public class OwnerService(IUnitOfWork unitOfWork, IValidator<User> validator) : IOwnerService
+public class OwnerService(IUnitOfWork unitOfWork,
+                          IValidator<User> validator)
+    : IOwnerService
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IValidator<User> _validator = validator;
 
-    public async Task ChangeUserRoleAsync(int id)
+    public async Task ChangeAdminRoleAsync(int id)
     {
         var user = await _unitOfWork.User.GetByIdAsync(id);
         if (user is null)

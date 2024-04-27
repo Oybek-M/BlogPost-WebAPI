@@ -1,4 +1,6 @@
-﻿namespace BlogPost.Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BlogPost.Domain.Entities;
 
 public class Post : Base
 {
@@ -13,4 +15,7 @@ public class Post : Base
     public int AuthorId { get; set; } // Post`s Author
     public bool IsEdited { get; set; } = false; // Post is edited after posted ?
     public DateTime EditedTime { get; set; } = DateTime.UtcNow; // If edited, Edited-Time
+
+    [ForeignKey(nameof(CategoryId))]
+    public Category Category { get; set; } = null;
 }

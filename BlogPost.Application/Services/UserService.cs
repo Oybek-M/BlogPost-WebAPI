@@ -18,7 +18,7 @@ public class UserService(IUnitOfWork unitOfWork) : IUserService
         return users.Select(u => (UserDto)u).ToList();
     }
 
-    public async Task<UserDto> GetById(int id)
+    public async Task<UserDto> GetByIdAsync(int id)
     {
         var user = await _unitOfWork.User.GetByIdAsync(id);
         if (user is null)
@@ -29,7 +29,7 @@ public class UserService(IUnitOfWork unitOfWork) : IUserService
         return (UserDto)user;
     }
 
-    public async Task<UserDto> GetByEmail(string email)
+    public async Task<UserDto> GetByEmailAsync(string email)
     {
         var user = await _unitOfWork.User.GetByEmailAsync(email);
         if(user is null)
@@ -40,7 +40,7 @@ public class UserService(IUnitOfWork unitOfWork) : IUserService
         return (UserDto)user;
     }
 
-    public async Task<UserDto> GetByPhone(string phone)
+    public async Task<UserDto> GetByPhoneAsync(string phone)
     {
         var user = await _unitOfWork.User.GetByPhoneAsync(phone);
         if(user is null )

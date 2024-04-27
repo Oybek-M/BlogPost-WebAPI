@@ -9,7 +9,9 @@ using FluentValidation;
 
 namespace BlogPost.Application.Services;
 
-public class CommentService(IUnitOfWork unitOfWork, IValidator<Comment> validator) : ICommentService
+public class CommentService(IUnitOfWork unitOfWork,
+                            IValidator<Comment> validator)
+    : ICommentService
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IValidator<Comment> _validator = validator;
@@ -62,6 +64,12 @@ public class CommentService(IUnitOfWork unitOfWork, IValidator<Comment> validato
         if (comment is null)
         {
             throw new StatusCodeException(HttpStatusCode.NotFound, "Comment is not found");
+        }
+
+        var result = await _validator.ValidateAsync(dto);
+        if (!result.IsValid)
+        {
+            throw new ValidationException(result.GetErrorMessage());
         }
 
         await _unitOfWork.Comment.UpdateAsync((Comment)dto);

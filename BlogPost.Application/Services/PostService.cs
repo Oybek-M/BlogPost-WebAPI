@@ -10,7 +10,7 @@ using System.Net;
 namespace Application.Services;
 
 public class PostService(IUnitOfWork unitOfWork,
-                          IValidator<Post> validator)
+                         IValidator<Post> validator)
     : IPostService
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
@@ -85,18 +85,20 @@ public class PostService(IUnitOfWork unitOfWork,
         return postsModel;
     }
 
-    public async Task<List<PostDto>> GetByCategoryAsync(int id)
+    public async Task<List<PostDto>> GetByCategoryAsync(int categoryId)
     {
-        var posts = await _unitOfWork.Post.GetByCategoryAsync(id);
+        var posts = await _unitOfWork.Post.GetByCategoryAsync(categoryId);
+
         if (!posts.Any())
         {
             throw new StatusCodeException(HttpStatusCode.NotFound, "Post(s) is not found");
         }
 
-        var posteModel = posts
+        var postsModel = posts
             .Select(item => (PostDto)item).ToList();
 
-        return posteModel;
+        posts.Clear();
+        return postsModel;
     }
 
     public Task<List<PostDto>> GetByTagAsync(string tagName)
@@ -117,6 +119,9 @@ public class PostService(IUnitOfWork unitOfWork,
         {
             throw new ValidationException(result.GetErrorMessage());
         }
+
+        dto.IsEdited = true;
+        dto.EditedTime = DateTime.Now;
 
         await _unitOfWork.Post.UpdateAsync((Post)dto);
     }

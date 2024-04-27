@@ -5,9 +5,9 @@ namespace BlogPost.Application.Interfaces;
 public interface IUserService
 {
     Task<List<UserDto>> GetAllAsync();
-    Task<UserDto> GetById(int id);
-    Task<UserDto> GetByEmail(string email);
-    Task<UserDto> GetByPhone(string phone);
+    Task<UserDto> GetByIdAsync(int id);
+    Task<UserDto> GetByEmailAsync(string email);
+    Task<UserDto> GetByPhoneAsync(string phone);
     Task UpdateAsync(int id, UpdateUserDto dto);
     Task DeleteAsync(int id);
 }
