@@ -85,7 +85,8 @@ public class PostService(IUnitOfWork unitOfWork,
         return posts;
         */
 
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
+        throw new StatusCodeException(HttpStatusCode.OK, "Coming soon...");
 
         /*
         var category = await _unitOfWork.Category.GetByNameAsync(post.Title);
