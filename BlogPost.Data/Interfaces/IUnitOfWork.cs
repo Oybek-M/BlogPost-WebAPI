@@ -6,5 +6,4 @@ public interface IUnitOfWork
     IPostRepository Post { get; }
     ICategoryRepository Category { get; }
     ICommentRepository Comment { get; }
-    IHashTagRepository HashTag { get; }
 }
