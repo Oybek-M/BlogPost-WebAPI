@@ -3,12 +3,9 @@
 
 namespace BlogPost.Application.Common.Exceptions;
 
-public class StatusCodeException : Exception
+public class StatusCodeException(HttpStatusCode statusCode,
+                                 string message)
+    : Exception(message)
 {
-    public HttpStatusCode StatusCode { get; }
-
-    public StatusCodeException(HttpStatusCode statusCode, string message) : base(message)
-    {
-        StatusCode = statusCode;
-    }
+    public HttpStatusCode StatusCode { get; set; } = statusCode;
 }
