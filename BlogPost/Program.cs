@@ -76,7 +76,6 @@ builder.Services.ConfigurationSwaggerAuthorize(builder.Configuration);
 // Validators
 builder.Services.AddScoped<IValidator<Category>, CategoryValidator>();
 builder.Services.AddScoped<IValidator<Comment>, CommentValidator>();
-builder.Services.AddScoped<IValidator<HashTag>, HashTagValidator>();
 builder.Services.AddScoped<IValidator<Post>, PostValidator>();
 builder.Services.AddScoped<IValidator<User>, UserValidator>();
 

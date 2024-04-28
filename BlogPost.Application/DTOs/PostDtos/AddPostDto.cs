@@ -6,7 +6,7 @@ public class AddPostDto
 {
     public string Title { get; set; } = string.Empty;
     public string Content {  get; set; } = string.Empty;
-    public List<HashTag> Tags { get; set; }
+    public List<string> Tags { get; set; } = new List<string>();
     public int CategoryId { get; set; }
 
     public static implicit operator Post(AddPostDto dto)

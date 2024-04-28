@@ -28,18 +28,14 @@ public class PostRepository(AppDbContext dbContext)
         return filteredPosts;
     }
 
-    async Task<List<Post>> GetByTagAsync(string hashTag)
+    public async Task<List<Post>> GetByTagAsync(string hashTag)
     {
         var posts = await _dbContext.Posts.ToListAsync();
         var filteredPosts = new List<Post>();
 
-        foreach (var post in posts)
-        {
-            if (post.Tags.Contains(hashTag))
-            {
-                filteredPosts.Add(post);
-            }
-        }
+        filteredPosts = posts
+            .Where(post => post.Tags.Contains(hashTag))
+            .ToList();
 
         posts.Clear();
         return filteredPosts;
