@@ -11,6 +11,4 @@ public class UnitOfWork(AppDbContext appDbContext) : IUnitOfWork
     public ICategoryRepository Category => new CategoryRepository(_appDbContext);
 
     public ICommentRepository Comment => new CommentRepository(_appDbContext);
-
-    public IHashTagRepository HashTag => new HashTagRepository(_appDbContext);
 }
