@@ -69,17 +69,28 @@ public class AccountService(IUnitOfWork unitOfWork,
         return _authManager.GeneratedToken(user);
     }
 
+    //public async Task SendCodeToEmailAsync(string email)
+    //{
+    //    var user = await _unitOfWork.User.GetByEmailAsync(email);
+    //    if(user is null)
+    //    {
+    //        throw new StatusCodeException(HttpStatusCode.NotFound, "User is not found");
+    //    }
+
+    //    var code = GeneratedCode();
+    //    _memoryCache.Set(email, code, TimeSpan.FromSeconds(100));
+
+    //    await _emailService.SendMessageToEmailAsync(email, "Verification code!", code);
+    //}
+
+
     public async Task SendCodeToEmailAsync(string email)
     {
         var user = await _unitOfWork.User.GetByEmailAsync(email);
-        if(user is null)
-        {
-            throw new StatusCodeException(HttpStatusCode.NotFound, "User is not found");
-        }
-
+        if (user is null)
+            throw new StatusCodeException(HttpStatusCode.NotFound, "User not found!");
         var code = GeneratedCode();
-        _memoryCache.Set(email, code, TimeSpan.FromSeconds(100));
-
+        _memoryCache.Set(email, code, TimeSpan.FromSeconds(60));
         await _emailService.SendMessageToEmailAsync(email, "Verification code!", code);
     }
 

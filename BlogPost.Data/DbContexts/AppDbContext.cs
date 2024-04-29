@@ -24,7 +24,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 PhoneNumber = "+998941061243",
                 Email = "oybekmuxtaraliyev@gmail.com",
                 Gender = Gender.Male,
-                Password = "a117bab00ec44e1aaf315bdfb86e0698fed13725d4e6202b7ae6ad051525fd17",
+                Password = "186cf774c97b60a1c106ef718d10970a6a06e06bef89553d9ae65d938a886eae",
+                EmailIsVerified = true,
+                PhoneIsVerified = true,
                 Role = Role.Owner
             });
     }

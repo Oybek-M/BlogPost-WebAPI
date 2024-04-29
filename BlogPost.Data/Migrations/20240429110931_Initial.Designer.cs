@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogPost.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240425165333_first_test")]
-    partial class first_test
+    [Migration("20240429110931_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,11 @@ namespace BlogPost.Data.Migrations
 
             modelBuilder.Entity("BlogPost.Domain.Entities.Category", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -51,11 +51,11 @@ namespace BlogPost.Data.Migrations
 
             modelBuilder.Entity("BlogPost.Domain.Entities.Comment", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CommentText")
                         .IsRequired()
@@ -64,11 +64,11 @@ namespace BlogPost.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("PostId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -77,11 +77,11 @@ namespace BlogPost.Data.Migrations
 
             modelBuilder.Entity("BlogPost.Domain.Entities.HashTag", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -90,23 +90,18 @@ namespace BlogPost.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long?>("PostId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("PostId");
 
                     b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("BlogPost.Domain.Entities.Post", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AuthorId")
                         .HasColumnType("int");
@@ -121,7 +116,7 @@ namespace BlogPost.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DislikeCount")
+                    b.Property<int>("DislikesCount")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EditedTime")
@@ -134,8 +129,12 @@ namespace BlogPost.Data.Migrations
                     b.Property<bool>("IsEdited")
                         .HasColumnType("bit");
 
-                    b.Property<int>("LikeCount")
+                    b.Property<int>("LikesCount")
                         .HasColumnType("int");
+
+                    b.Property<string>("Tags")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -146,16 +145,18 @@ namespace BlogPost.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("BlogPost.Domain.Entities.User", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -199,30 +200,29 @@ namespace BlogPost.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1L,
-                            CreatedAt = new DateTime(2024, 4, 25, 16, 53, 32, 787, DateTimeKind.Utc).AddTicks(5326),
+                            Id = 1,
+                            CreatedAt = new DateTime(2024, 4, 29, 11, 9, 30, 975, DateTimeKind.Utc).AddTicks(1405),
                             Email = "oybekmuxtaraliyev@gmail.com",
                             EmailIsVerified = false,
                             FirstName = "Oybek",
                             Gender = 1,
                             LastName = "Muxtaraliyev",
-                            Password = "a117bab00ec44e1aaf315bdfb86e0698fed13725d4e6202b7ae6ad051525fd17",
+                            Password = "186cf774c97b60a1c106ef718d10970a6a06e06bef89553d9ae65d938a886eae",
                             PhoneIsVerified = false,
                             PhoneNumber = "+998941061243",
                             Role = 0
                         });
                 });
 
-            modelBuilder.Entity("BlogPost.Domain.Entities.HashTag", b =>
-                {
-                    b.HasOne("BlogPost.Domain.Entities.Post", null)
-                        .WithMany("Tags")
-                        .HasForeignKey("PostId");
-                });
-
             modelBuilder.Entity("BlogPost.Domain.Entities.Post", b =>
                 {
-                    b.Navigation("Tags");
+                    b.HasOne("BlogPost.Domain.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 #pragma warning restore 612, 618
         }
