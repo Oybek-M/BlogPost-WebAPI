@@ -198,13 +198,13 @@ namespace BlogPost.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 4, 28, 5, 34, 52, 909, DateTimeKind.Utc).AddTicks(5949),
+                            CreatedAt = new DateTime(2024, 4, 29, 11, 9, 30, 975, DateTimeKind.Utc).AddTicks(1405),
                             Email = "oybekmuxtaraliyev@gmail.com",
                             EmailIsVerified = false,
                             FirstName = "Oybek",
                             Gender = 1,
                             LastName = "Muxtaraliyev",
-                            Password = "a117bab00ec44e1aaf315bdfb86e0698fed13725d4e6202b7ae6ad051525fd17",
+                            Password = "186cf774c97b60a1c106ef718d10970a6a06e06bef89553d9ae65d938a886eae",
                             PhoneIsVerified = false,
                             PhoneNumber = "+998941061243",
                             Role = 0
