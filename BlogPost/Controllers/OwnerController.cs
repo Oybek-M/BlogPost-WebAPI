@@ -22,7 +22,7 @@ public class OwnerController(IOwnerService ownerService,
     }
 
     [HttpPost("id")]
-    [Authorize(Roles = "Ownew")]
+    [Authorize(Roles = "Owner")]
     public async Task<IActionResult> ChangeAdminRoleAsync(int id)
     {
         await _ownerService.ChangeAdminRoleAsync(id);
