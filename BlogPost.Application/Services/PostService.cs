@@ -22,6 +22,8 @@ public class PostService(IUnitOfWork unitOfWork,
         if (!result.IsValid)
             throw new ValidationException(result.GetErrorMessage());
 
+        // to'girlash kk
+
         await _unitOfWork.Post.CreateAsync((Post)dto);
     }
 

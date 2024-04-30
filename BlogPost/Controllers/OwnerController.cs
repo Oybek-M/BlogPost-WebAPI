@@ -17,8 +17,8 @@ public class OwnerController(IOwnerService ownerService,
     [Authorize(Roles = "Owner")]
     public async Task<IActionResult> GetAllSuperAdminAsync()
     {
-        await _ownerService.GetAllSuperAdminAsync();
-        return Ok();
+        var superAdmins = await _ownerService.GetAllSuperAdminAsync();
+        return Ok(superAdmins);
     }
 
     [HttpPost("id")]

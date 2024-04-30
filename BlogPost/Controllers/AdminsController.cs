@@ -18,8 +18,8 @@ public class AdminsController(IAdminService adminService,
     [Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> GetAllAdminAsync()
     {
-        await _adminService.GetAllAdminAsync();
-        return Ok();
+        var admins = await _adminService.GetAllAdminAsync();
+        return Ok(admins);
     }
 
     [HttpPost("id")]

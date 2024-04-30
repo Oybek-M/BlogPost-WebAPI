@@ -23,24 +23,24 @@ public class CategoriesController(ICategoryService categoryService) : Controller
     [AllowAnonymous]
     public async Task<IActionResult> GetAllAsync()
     {
-        await _categoryService.GetAllAsync();
-        return Ok();
+        var categories =  await _categoryService.GetAllAsync();
+        return Ok(categories);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("id")]
     [AllowAnonymous]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
-        await _categoryService.GetByIdAsync(id);
-        return Ok();
+        var category = await _categoryService.GetByIdAsync(id);
+        return Ok(category);
     }
 
-    [HttpGet("{name}")]
+    [HttpGet("name")]
     [AllowAnonymous]
     public async Task<IActionResult> GetByNameAsync(string name)
     {
-        await _categoryService.GetByNameAsync(name);
-        return Ok();
+        var category = await _categoryService.GetByNameAsync(name);
+        return Ok(category);
     }
 
     [HttpPut]
@@ -51,7 +51,7 @@ public class CategoriesController(ICategoryService categoryService) : Controller
         return Ok();
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("id")]
     [Authorize(Roles = "Admin, SuperAdmin")]
     public async Task<IActionResult> DeleteAsync(int id)
     {

@@ -12,7 +12,7 @@ public class PostsController(IPostService postService) : ControllerBase
     private readonly IPostService _postService = postService;
 
     [HttpPost]
-    [Authorize(Roles = "Admin, SuperAdmin")]
+    [Authorize]
     public async Task<IActionResult> CreateAsync([FromForm]AddPostDto addPostDto)
     {
         await _postService.CreateAsync(addPostDto);
@@ -23,40 +23,40 @@ public class PostsController(IPostService postService) : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> GetAllAsync()
     {
-        await _postService.GetAllAsync();
-        return Ok();
+        var posts = await _postService.GetAllAsync();
+        return Ok(posts);
     }
 
     [HttpGet("id")]
     [AllowAnonymous]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
-        await _postService.GetByIdAsync(id);
-        return Ok();
+        var post = await _postService.GetByIdAsync(id);
+        return Ok(post);
     }
 
     [HttpGet("title")]
     [AllowAnonymous]
     public async Task<IActionResult> GetByTitleAsync(string title)
     {
-        await _postService.GetByTitleAsync(title);
-        return Ok();
+        var post =  await _postService.GetByTitleAsync(title);
+        return Ok(post);
     }
 
     [HttpGet("category")]
     [AllowAnonymous]
     public async Task<IActionResult> GetByCategoryAsync(int id)
     {
-        await _postService.GetByCategoryAsync(id);
-        return Ok();
+        var post = await _postService.GetByCategoryAsync(id);
+        return Ok(post);
     }
 
     [HttpGet("tag")]
     [AllowAnonymous]
     public async Task<IActionResult> GetByTag(string tag)
     {
-        await _postService.GetByTagAsync(tag);
-        return Ok();
+        var post = await _postService.GetByTagAsync(tag);
+        return Ok(post);
     }
 
     [HttpPut]

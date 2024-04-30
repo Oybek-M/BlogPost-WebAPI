@@ -19,35 +19,35 @@ public class UsersController(IUserService userService) : ControllerBase
         return Ok();
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("id")]
     [Authorize(Roles = "Admin, SuperAdmin")]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
-        await _userService.GetByIdAsync(id);
-        return Ok();
+        var user = await _userService.GetByIdAsync(id);
+        return Ok(user);
     }
 
-    [HttpGet("{email}")]
+    [HttpGet("email")]
     [Authorize(Roles = "Admin, SuperAdmin")]
     public async Task<IActionResult> GetByEmailAsync(string email)
     {
-        await _userService.GetByEmailAsync(email);
-        return Ok();
+        var user = await _userService.GetByEmailAsync(email);
+        return Ok(user);
     }
 
-    [HttpGet("{phoneNumber}")]
+    [HttpGet("phoneNumber")]
     [Authorize(Roles = "Admin, SuperAdmin")]
     public async Task<IActionResult> GetByPhoneAsync(string phoneNumber)
     {
-        await _userService.GetByPhoneAsync(phoneNumber);
-        return Ok();
+        var user =  await _userService.GetByPhoneAsync(phoneNumber);
+        return Ok(user);
     }
 
     [HttpPut]
     [Authorize]
     public async Task<IActionResult> UpdateAsync([FromForm] UpdateUserDto dto)
     {
-        var id = int.Parse(HttpContext.User.FindFirst("Id").Value);
+        var id = int.Parse(HttpContext.User.FindFirst("Id")!.Value);
 
         await _userService.UpdateAsync(id, dto);
         return Ok();
