@@ -65,12 +65,12 @@ public class UserService(IUnitOfWork unitOfWork) : IUserService
         user.CreatedAt = TimeHelper.GetCurrentTime();
         user.Password = model.Password;
 
-        if (model.Email == dto.Email)
+        if (model.Email != dto.Email)
         {
             user.EmailIsVerified = false;
         }
 
-        if (model.PhoneNumber == dto.PhoneNumber)
+        if (model.PhoneNumber != dto.PhoneNumber)
         {
             user.PhoneIsVerified = false;
         }
