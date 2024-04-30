@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BlogPost.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -111,7 +111,7 @@ namespace BlogPost.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "CreatedAt", "Email", "EmailIsVerified", "FirstName", "Gender", "LastName", "Password", "PhoneIsVerified", "PhoneNumber", "Role" },
-                values: new object[] { 1, new DateTime(2024, 4, 29, 11, 9, 30, 975, DateTimeKind.Utc).AddTicks(1405), "oybekmuxtaraliyev@gmail.com", false, "Oybek", 1, "Muxtaraliyev", "186cf774c97b60a1c106ef718d10970a6a06e06bef89553d9ae65d938a886eae", false, "+998941061243", 0 });
+                values: new object[] { 1, new DateTime(2024, 4, 30, 15, 51, 4, 920, DateTimeKind.Utc).AddTicks(961), "oybekmuxtaraliyev@gmail.com", true, "Oybek", 1, "Muxtaraliyev", "186cf774c97b60a1c106ef718d10970a6a06e06bef89553d9ae65d938a886eae", true, "+998941061243", 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_CategoryId",

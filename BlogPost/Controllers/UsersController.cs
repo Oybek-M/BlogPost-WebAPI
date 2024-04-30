@@ -12,15 +12,15 @@ public class UsersController(IUserService userService) : ControllerBase
     private readonly IUserService _userService = userService;
 
     [HttpGet("users")]
-    [Authorize(Roles = "Admin, SuperAdmin")]
+    [Authorize]
     public async Task<IActionResult> GetAllAsync()
     {
-        await _userService.GetAllAsync();
-        return Ok();
+        var users = await _userService.GetAllAsync();
+        return Ok(users);
     }
 
     [HttpGet("id")]
-    [Authorize(Roles = "Admin, SuperAdmin")]
+    [Authorize]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
         var user = await _userService.GetByIdAsync(id);
@@ -28,7 +28,7 @@ public class UsersController(IUserService userService) : ControllerBase
     }
 
     [HttpGet("email")]
-    [Authorize(Roles = "Admin, SuperAdmin")]
+    [Authorize]
     public async Task<IActionResult> GetByEmailAsync(string email)
     {
         var user = await _userService.GetByEmailAsync(email);
@@ -36,7 +36,7 @@ public class UsersController(IUserService userService) : ControllerBase
     }
 
     [HttpGet("phoneNumber")]
-    [Authorize(Roles = "Admin, SuperAdmin")]
+    [Authorize]
     public async Task<IActionResult> GetByPhoneAsync(string phoneNumber)
     {
         var user =  await _userService.GetByPhoneAsync(phoneNumber);
@@ -45,19 +45,21 @@ public class UsersController(IUserService userService) : ControllerBase
 
     [HttpPut]
     [Authorize]
-    public async Task<IActionResult> UpdateAsync([FromForm] UpdateUserDto dto)
+    public async Task<IActionResult> UpdateAsync(int targetId, [FromForm] UpdateUserDto dto)
     {
-        var id = int.Parse(HttpContext.User.FindFirst("Id")!.Value);
+        var updaterId = int.Parse(HttpContext.User.FindFirst("Id").Value);
 
-        await _userService.UpdateAsync(id, dto);
+        await _userService.UpdateAsync(updaterId, targetId, dto);
         return Ok();
     }
 
     [HttpDelete("id")]
     [Authorize]
-    public async Task<IActionResult> DeleteAsync(int id)
+    public async Task<IActionResult> DeleteAsync(int targetId)
     {
-        await _userService.DeleteAsync(id);
+        var deleterId = int.Parse(HttpContext.User.FindFirst("Id").Value);
+
+        await _userService.DeleteAsync(deleterId, targetId);
         return Ok();
     }
 }

@@ -32,17 +32,21 @@ public class AdminsController(IAdminService adminService,
 
     [HttpPut]
     [Authorize(Roles = "SuperAdmin")]
-    public async Task<IActionResult> UpdateUserAsync(int id, [FromForm]UpdateUserDto updateUserDto)
+    public async Task<IActionResult> UpdateUserAsync(int targetId, [FromForm]UpdateUserDto updateUserDto)
     {
-        await _userService.UpdateAsync(id, updateUserDto);
+        var updaterId = int.Parse(HttpContext.User.FindFirst("Id").Value);
+
+        await _userService.UpdateAsync(updaterId, targetId, updateUserDto);
         return Ok();
     }
 
     [HttpDelete]
     [Authorize(Roles = "SuperAdmin")]
-    public async Task<IActionResult> DeleteUserAsync(int id)
+    public async Task<IActionResult> DeleteUserAsync(int targetId)
     {
-        await _userService.DeleteAsync(id);
+        var deleterId = int.Parse(HttpContext.User.FindFirst("Id").Value);
+
+        await _userService.DeleteAsync(deleterId, targetId);
         return Ok();
     }
 }

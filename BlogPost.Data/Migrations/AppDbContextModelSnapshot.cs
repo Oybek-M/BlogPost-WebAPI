@@ -198,7 +198,7 @@ namespace BlogPost.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 4, 30, 11, 0, 46, 695, DateTimeKind.Utc).AddTicks(4866),
+                            CreatedAt = new DateTime(2024, 4, 30, 15, 51, 4, 920, DateTimeKind.Utc).AddTicks(961),
                             Email = "oybekmuxtaraliyev@gmail.com",
                             EmailIsVerified = true,
                             FirstName = "Oybek",

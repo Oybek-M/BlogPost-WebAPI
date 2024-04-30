@@ -22,7 +22,11 @@ public class PostService(IUnitOfWork unitOfWork,
         if (!result.IsValid)
             throw new ValidationException(result.GetErrorMessage());
 
-        // to'girlash kk
+        var category = await _unitOfWork.Category.GetByIdAsync(dto.CategoryId);
+        if(category is null)
+        {
+            throw new StatusCodeException(HttpStatusCode.Conflict, "Category is not found with this ID");
+        }
 
         await _unitOfWork.Post.CreateAsync((Post)dto);
     }
@@ -89,6 +93,12 @@ public class PostService(IUnitOfWork unitOfWork,
 
     public async Task<List<PostDto>> GetByCategoryAsync(int categoryId)
     {
+        var category = await _unitOfWork.Category.GetByIdAsync(categoryId);
+        if (category is null)
+        {
+            throw new StatusCodeException(HttpStatusCode.Conflict, "Category is not found with this ID, so no posts either");
+        }
+
         var posts = await _unitOfWork.Post.GetByCategoryAsync(categoryId);
 
         if (!posts.Any())
@@ -105,7 +115,7 @@ public class PostService(IUnitOfWork unitOfWork,
 
     public Task<List<PostDto>> GetByTagAsync(string tagName)
     {
-        throw new NotImplementedException();
+        throw new StatusCodeException(HttpStatusCode.NotImplemented, "Coming soon(works on service)");
     }
 
     public async Task UpdateAsync(PostDto dto)

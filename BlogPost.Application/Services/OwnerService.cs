@@ -15,6 +15,15 @@ public class OwnerService(IUnitOfWork unitOfWork,
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IValidator<User> _validator = validator;
 
+
+    public async Task<List<User>> GetAllSuperAdminAsync()
+    {
+        var superAdmins = await _unitOfWork.User.GetAllAsync();
+        superAdmins = superAdmins.Where(u => u.Role == Role.SuperAdmin).ToList();
+
+        return superAdmins;
+    }
+
     public async Task ChangeAdminRoleAsync(int id)
     {
         var user = await _unitOfWork.User.GetByIdAsync(id);
@@ -30,13 +39,5 @@ public class OwnerService(IUnitOfWork unitOfWork,
 
         user.Role = user.Role == Role.SuperAdmin ? Role.Admin : Role.SuperAdmin;
         await _unitOfWork.User.UpdateAsync(user);
-    }
-
-    public async Task<List<User>> GetAllSuperAdminAsync()
-    {
-        var superAdmins = await _unitOfWork.User.GetAllAsync();
-        superAdmins = superAdmins.Where(u => u.Role == Role.SuperAdmin).ToList();
-
-        return superAdmins;
     }
 }

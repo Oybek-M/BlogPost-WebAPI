@@ -16,7 +16,16 @@ public class UserService(IUnitOfWork unitOfWork) : IUserService
     public async Task<List<UserDto>> GetAllAsync()
     {
         var users = await _unitOfWork.User.GetAllAsync();
-        return users.Select(u => (UserDto)u).ToList();
+
+        // User(model) => UserDto(model)
+        var userModels = new List<UserDto>();
+        foreach (var user in users)
+        {
+            var userDto = (UserDto)user;
+            userModels.Add(userDto);
+        }
+
+        return userModels;
     }
 
     public async Task<UserDto> GetByIdAsync(int id)
@@ -33,7 +42,7 @@ public class UserService(IUnitOfWork unitOfWork) : IUserService
     public async Task<UserDto> GetByEmailAsync(string email)
     {
         var user = await _unitOfWork.User.GetByEmailAsync(email);
-        if(user is null)
+        if (user is null)
         {
             throw new StatusCodeException(HttpStatusCode.NotFound, "User is not found");
         }
@@ -44,7 +53,7 @@ public class UserService(IUnitOfWork unitOfWork) : IUserService
     public async Task<UserDto> GetByPhoneAsync(string phone)
     {
         var user = await _unitOfWork.User.GetByPhoneAsync(phone);
-        if(user is null )
+        if (user is null)
         {
             throw new StatusCodeException(HttpStatusCode.NotFound, "User is not found");
         }
@@ -52,53 +61,81 @@ public class UserService(IUnitOfWork unitOfWork) : IUserService
         return (UserDto)user;
     }
 
-    public async Task UpdateAsync(int id, UpdateUserDto dto)
+    public async Task UpdateAsync(int updaterId, int targetId, UpdateUserDto dto)
     {
-        var model = await _unitOfWork.User.GetByIdAsync(id);
-        if(model is null)
-        {
-            throw new StatusCodeException(HttpStatusCode.NotFound, "User is not found");
-        }
-        
-        var user = (User)dto;
-        user.Id = id;
-        user.CreatedAt = TimeHelper.GetCurrentTime();
-        user.Password = model.Password;
+        var updaterUser = await _unitOfWork.User.GetByIdAsync(updaterId);
 
-        if (model.Email != dto.Email)
+        if (updaterId != targetId && updaterUser.Role == Role.User)
         {
-            user.EmailIsVerified = false;
+            throw new StatusCodeException(HttpStatusCode.NotAcceptable, "Your role is not accepted to update a user");
         }
-
-        if (model.PhoneNumber != dto.PhoneNumber)
+        else
         {
-            user.PhoneIsVerified = false;
-        }
+            var model = await _unitOfWork.User.GetByIdAsync(targetId);
 
-        await _unitOfWork.User.UpdateAsync(user);
-        throw new StatusCodeException(HttpStatusCode.OK, "User has been updated succesfully");
+            // Target User is not null
+            if (model is null)
+            {
+                throw new StatusCodeException(HttpStatusCode.NotFound, "User is not found");
+            }
+
+
+            var user = (User)dto;
+            user.Id = targetId;
+            user.CreatedAt = TimeHelper.GetCurrentTime();
+            user.Password = model.Password;
+
+            if (model.Email != dto.Email)
+            {
+                user.EmailIsVerified = false;
+            }
+
+            if (model.PhoneNumber != dto.PhoneNumber)
+            {
+                user.PhoneIsVerified = false;
+            }
+
+
+            await _unitOfWork.User.UpdateAsync(user);
+            throw new StatusCodeException(HttpStatusCode.OK, "User has been updated succesfully");
+        }
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(int deleterId, int targetId)
     {
-        var user = await _unitOfWork.User.GetByIdAsync(id);
-        if (user.Role == Role.Owner)
-        {
-            throw new StatusCodeException(HttpStatusCode.Conflict, "Egalikni boshqaga o'tkazish KK");
-        } else if (user.Role == Role.SuperAdmin)
-        {
-            throw new StatusCodeException(HttpStatusCode.Conflict, "SuperAdmin larni faqat Owner boshqara oladi");
-        } else if (user.Role == Role.Admin)
-        {
-            throw new StatusCodeException(HttpStatusCode.Conflict, "Admin larni faqat SuperAdmin boshqara oladi");
-        }
+        var deleterUser = await _unitOfWork.User.GetByIdAsync(deleterId);
 
-        if(user is null)
+        if (deleterId != targetId && deleterUser.Role == Role.User)
         {
-            throw new StatusCodeException(HttpStatusCode.NotFound, "User is not found");
+            throw new StatusCodeException(HttpStatusCode.NotAcceptable, "Your role is not accepted to delete a user");
         }
+        else
+        {
+            var targetUser = await _unitOfWork.User.GetByIdAsync(targetId);
 
-        await _unitOfWork.User.DeleteAsync(user);
-        throw new StatusCodeException(HttpStatusCode.OK, "User has been deleted sucessfully");
+            // Target User is not null
+            if (targetUser is null)
+            {
+                throw new StatusCodeException(HttpStatusCode.NotFound, "User is not found");
+            }
+
+
+            if (targetUser.Role == Role.Owner)
+            {
+                throw new StatusCodeException(HttpStatusCode.Conflict, "Egalikni boshqaga o'tkazish KK");
+            }
+            else if (targetUser.Role == Role.SuperAdmin)
+            {
+                throw new StatusCodeException(HttpStatusCode.Conflict, "SuperAdmin larni faqat Owner boshqara oladi");
+            }
+            else if (targetUser.Role == Role.Admin)
+            {
+                throw new StatusCodeException(HttpStatusCode.Conflict, "Admin larni faqat SuperAdmin boshqara oladi");
+            }
+
+
+            await _unitOfWork.User.DeleteAsync(targetUser);
+            throw new StatusCodeException(HttpStatusCode.OK, "User has been deleted sucessfully");
+        }
     }
 }

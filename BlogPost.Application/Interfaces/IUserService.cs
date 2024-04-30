@@ -8,6 +8,6 @@ public interface IUserService
     Task<UserDto> GetByIdAsync(int id);
     Task<UserDto> GetByEmailAsync(string email);
     Task<UserDto> GetByPhoneAsync(string phone);
-    Task UpdateAsync(int id, UpdateUserDto dto);
-    Task DeleteAsync(int id);
+    Task UpdateAsync(int updaterId, int targetId, UpdateUserDto dto);
+    Task DeleteAsync(int deleterId, int targetId);
 }

@@ -4,6 +4,6 @@ namespace BlogPost.Application.Interfaces;
 
 public interface IOwnerService
 {
-    Task ChangeAdminRoleAsync(int id);
     Task<List<User>> GetAllSuperAdminAsync();
+    Task ChangeAdminRoleAsync(int id);
 }
