@@ -5,6 +5,7 @@ using BlogPost.Application.Interfaces;
 using BlogPost.Data.Interfaces;
 using BlogPost.Domain.Entities;
 using System.Net;
+using BlogPost.Domain.Enums;
 
 namespace BlogPost.Application.Services;
 
@@ -71,6 +72,17 @@ public class UserService(IUnitOfWork unitOfWork) : IUserService
     public async Task DeleteAsync(int id)
     {
         var user = await _unitOfWork.User.GetByIdAsync(id);
+        if (user.Role == Role.Owner)
+        {
+            throw new StatusCodeException(HttpStatusCode.Conflict, "Egalikni boshqaga o'tkazish KK");
+        } else if (user.Role == Role.SuperAdmin)
+        {
+            throw new StatusCodeException(HttpStatusCode.Conflict, "SuperAdmin larni faqat Owner boshqara oladi");
+        } else if (user.Role == Role.Admin)
+        {
+            throw new StatusCodeException(HttpStatusCode.Conflict, "Admin larni faqat SuperAdmin boshqara oladi");
+        }
+
         if(user is null)
         {
             throw new StatusCodeException(HttpStatusCode.NotFound, "User is not found");
