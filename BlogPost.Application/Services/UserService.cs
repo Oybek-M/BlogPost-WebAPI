@@ -59,11 +59,21 @@ public class UserService(IUnitOfWork unitOfWork) : IUserService
         {
             throw new StatusCodeException(HttpStatusCode.NotFound, "User is not found");
         }
-
+        
         var user = (User)dto;
         user.Id = id;
         user.CreatedAt = TimeHelper.GetCurrentTime();
         user.Password = model.Password;
+
+        if (model.Email == dto.Email)
+        {
+            user.EmailIsVerified = false;
+        }
+
+        if (model.PhoneNumber == dto.PhoneNumber)
+        {
+            user.PhoneIsVerified = false;
+        }
 
         await _unitOfWork.User.UpdateAsync(user);
         throw new StatusCodeException(HttpStatusCode.OK, "User has been updated succesfully");
