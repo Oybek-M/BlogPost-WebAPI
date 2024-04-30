@@ -1,6 +1,8 @@
-﻿namespace BlogPost.Application.Common.Exceptions;
+﻿using System.Net;
 
-public class ValidatorException : Exception
+namespace BlogPost.Application.Common.Exceptions;
+
+public class ValidatorException : StatusCodeException
 {
-    public ValidatorException(string message) : base(message) { }
+    public ValidatorException(string message) : base(HttpStatusCode.BadRequest, message) { }
 }
